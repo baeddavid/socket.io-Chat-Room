@@ -1,8 +1,13 @@
-let app = require('express')();
-let http = require('http').createServer(app);
+const app = require('express')();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/index.html');
+});
+
+io.on('connection', function(socket) {
+    console.log('a user connected');
 });
 
 http.listen(3000, function() {
