@@ -1,15 +1,19 @@
 const app = require('express')();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
+let userCounter = 0;
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket) {
-    console.log('a user connected');
-    socket.on('disconnect', function() {
+io.on('connection', socket => {
+    userCounter++;
+    console.log(`a user connected\nConnected Users: ${userCounter}`);
+    socket.on('disconnect', () => {
+        userCounter--;
         console.log('a user disconnected');
+        console.log(`a user connected\nConnected Users: ${userCounter}`);
     });
 });
 
